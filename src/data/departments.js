@@ -1,0 +1,15 @@
+export const departments = [
+  { id: 'dept-001', name: 'Outpatient Department (OPD)', code: 'OPD', head: 'Dr. S. Rahman', floor: 'Ground Floor', capacity: 120, activeQueues: 2 },
+  { id: 'dept-002', name: 'Emergency Unit', code: 'ER', head: 'Dr. M. Farook', floor: 'Ground Floor', capacity: 40, activeQueues: 1 },
+  { id: 'dept-003', name: 'Medical Clinic', code: 'MED', head: 'Dr. A. Nazeer', floor: '1st Floor', capacity: 60, activeQueues: 1 },
+  { id: 'dept-004', name: 'Surgical Clinic', code: 'SUR', head: 'Dr. K. Iqbal', floor: '1st Floor', capacity: 45, activeQueues: 1 },
+  { id: 'dept-005', name: 'Pediatric Clinic', code: 'PED', head: 'Dr. F. Begum', floor: '2nd Floor', capacity: 50, activeQueues: 1 },
+  { id: 'dept-006', name: 'Orthopedic Clinic', code: 'ORT', head: 'Dr. R. Hussain', floor: '2nd Floor', capacity: 35, activeQueues: 0 },
+  { id: 'dept-007', name: 'Neurology Clinic', code: 'NEU', head: 'Dr. T. Majeed', floor: '3rd Floor', capacity: 30, activeQueues: 1 },
+  { id: 'dept-008', name: 'Gynecology Clinic', code: 'GYN', head: 'Dr. S. Fathima', floor: '3rd Floor', capacity: 40, activeQueues: 1 },
+  { id: 'dept-009', name: 'Dental Clinic', code: 'DEN', head: 'Dr. N. Ahamed', floor: 'Ground Floor', capacity: 25, activeQueues: 0 },
+  { id: 'dept-010', name: 'Radiology Unit', code: 'RAD', head: 'Dr. H. Sadiq', floor: 'Basement', capacity: 20, activeQueues: 1 },
+  { id: 'dept-011', name: 'Dialysis Unit', code: 'DIA', head: 'Dr. P. Zarook', floor: '1st Floor', capacity: 15, activeQueues: 0 },
+  { id: 'dept-012', name: 'Laboratory Services', code: 'LAB', head: 'Dr. L. Cassim', floor: 'Ground Floor', capacity: 30, activeQueues: 0 },
+  { id: 'dept-013', name: 'Pharmacy', code: 'PHR', head: 'Mr. A. Mohideen', floor: 'Ground Floor', capacity: 50, activeQueues: 0 },
+];
