@@ -1,28 +1,32 @@
-import { demoCredentials, users } from '../data/users';
-import { ROLES } from '../utils/constants';
+import { amhApi } from './amhApi.js';
+import { AUTH_KEY } from './api.js';
 
-const AUTH_KEY = 'amh_auth';
+export const demoCredentials = {
+  patient: { email: 'rizwan@email.com', password: 'patient123' },
+  reception: { email: 's.rahma@amh.gov.lk', password: 'reception123' },
+  doctor: { email: 'a.nazeer@amh.gov.lk', password: 'doctor123' },
+  admin: { email: 'admin@amh.gov.lk', password: 'admin123' },
+};
 
 export const authService = {
-  login: (email, password, role) => {
-    const creds = demoCredentials[role];
-    if (creds && creds.email === email && creds.password === password) {
-      const user = users.find((u) => u.email === email && u.role === role) || {
-        id: 'demo',
-        name: ROLE_NAMES[role],
-        email,
-        role,
+  login: async (email, password, role) => {
+    try {
+      const data = await amhApi.login(email, password, role);
+      const session = {
+        user: data.user,
+        profile: data.profile,
+        token: data.token,
+        role: data.role,
+        loginAt: Date.now(),
       };
-      const session = { user, role, token: 'demo-jwt-token', loginAt: Date.now() };
       localStorage.setItem(AUTH_KEY, JSON.stringify(session));
       return { success: true, user: session };
+    } catch (err) {
+      return { success: false, error: err.message };
     }
-    return { success: false, error: 'Invalid email or password' };
   },
 
-  logout: () => {
-    localStorage.removeItem(AUTH_KEY);
-  },
+  logout: () => localStorage.removeItem(AUTH_KEY),
 
   getSession: () => {
     try {
@@ -34,11 +38,4 @@ export const authService = {
   },
 
   isAuthenticated: () => !!authService.getSession(),
-};
-
-const ROLE_NAMES = {
-  [ROLES.PATIENT]: 'Demo Patient',
-  [ROLES.RECEPTION]: 'Demo Receptionist',
-  [ROLES.DOCTOR]: 'Demo Doctor',
-  [ROLES.ADMIN]: 'Demo Administrator',
 };
