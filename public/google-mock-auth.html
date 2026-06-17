@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in - Google Accounts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-md border border-gray-200 max-w-[450px] w-full p-8 text-center">
+    <!-- Google Logo -->
+    <div class="flex justify-center mb-6">
+      <svg class="h-8 w-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21.35 11.1H12v2.7h5.38c-.23 1.22-.92 2.26-1.96 2.96v2.46h3.17c1.86-1.72 2.94-4.25 2.94-7.3 0-.62-.06-1.21-.18-1.82z" fill="#4285F4"/>
+        <path d="M12 20.5c2.3 0 4.23-.76 5.64-2.07l-3.17-2.46c-.88.59-2.01.94-3.47.94-2.67 0-4.93-1.8-5.74-4.23H2.02v2.54c1.5 2.98 4.58 5.02 8.16 5.02z" fill="#34A853"/>
+        <path d="M6.26 12.68c-.21-.62-.33-1.28-.33-1.96s.12-1.34.33-1.96V6.22H2.02C1.37 7.52 1 8.98 1 10.52s.37 3 1.02 4.3l3.24-2.54z" fill="#FBBC05"/>
+        <path d="M12 8.68c1.25 0 2.38.43 3.26 1.28l2.45-2.45c-1.47-1.37-3.4-2.21-5.71-2.21-3.58 0-6.66 2.04-8.16 5.02l3.24 2.54c.81-2.43 3.07-4.22 5.74-4.22z" fill="#EA4335"/>
+      </svg>
+    </div>
+
+    <h1 class="text-xl font-medium text-gray-800 mb-1">Choose an account</h1>
+    <p class="text-sm text-gray-500 mb-6">to continue to <span class="font-medium text-gray-700">AMH Kalmunai</span></p>
+
+    <!-- Account Selection List -->
+    <div class="space-y-2 text-left mb-6" id="account-list">
+      <!-- Generated dynamically based on URL parameter -->
+    </div>
+
+    <!-- Info Footer -->
+    <div class="text-xs text-gray-500 text-left border-t border-gray-100 pt-4 mt-6">
+      To continue, Google will share your name, email address, language preference, and profile picture with AMH Kalmunai.
+    </div>
+  </div>
+
+  <script>
+    // Get query parameters (role of login page)
+    const params = new URLSearchParams(window.location.search);
+    const flowType = params.get('type') || 'patient';
+
+    const users = {
+      patient: [
+        { name: "Rizwan Ahmad", email: "rizwan@email.com", img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Rizwan" }
+      ],
+      staff: [
+        { name: "Rahma Receptionist", email: "s.rahma@amh.gov.lk", img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Rahma", role: "reception" },
+        { name: "Dr. A. Nazeer", email: "a.nazeer@amh.gov.lk", img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Nazeer", role: "doctor" },
+        { name: "AMH Administrator", email: "admin@amh.gov.lk", img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Admin", role: "admin" }
+      ]
+    };
+
+    const container = document.getElementById('account-list');
+    const selectedUsers = users[flowType] || users.patient;
+
+    selectedUsers.forEach(user => {
+      const button = document.createElement('button');
+      button.className = "w-full flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all text-left outline-none focus:ring-2 focus:ring-blue-500";
+      button.onclick = () => selectAccount(user);
+
+      button.innerHTML = `
+        <img src="${user.img}" class="w-8 h-8 rounded-full bg-slate-100" alt="avatar" />
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-gray-700 truncate">${user.name}</p>
+          <p class="text-xs text-gray-500 truncate">${user.email}</p>
+        </div>
+        ${user.role ? `<span class="text-[10px] bg-slate-150 px-2 py-0.5 rounded text-gray-500 uppercase font-bold">${user.role}</span>` : ''}
+      `;
+      container.appendChild(button);
+    });
+
+    function selectAccount(user) {
+      // Send login message to parent window
+      if (window.opener) {
+        window.opener.postMessage({
+          source: 'google-mock-auth',
+          status: 'success',
+          user: user
+        }, window.location.origin);
+      }
+      window.close();
+    }
+  </script>
+</body>
+</html>

@@ -7,7 +7,7 @@ import { amhApi, mapClinic } from '../../services/amhApi';
 export default function DoctorSchedule() {
   const { data: doctor } = useFetch(() => amhApi.getDoctorMe());
   const { data: schedules, loading, error } = useFetch(
-    () => amhApi.getClinics(doctor?.id).then((s) => s.map(mapClinic)),
+    () => doctor?.id ? amhApi.getClinics(doctor.id).then((s) => s.map(mapClinic)) : Promise.resolve([]),
     [doctor?.id]
   );
 

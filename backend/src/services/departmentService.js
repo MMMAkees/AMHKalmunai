@@ -14,7 +14,7 @@ export async function getDepartmentById(id) {
 export async function createDepartment(data) {
   const result = await query(
     'INSERT INTO departments (dept_code, name, head_name, floor, capacity) VALUES (?, ?, ?, ?, ?)',
-    [data.dept_code, data.name, data.head_name, data.floor, data.capacity || 0]
+    [data.dept_code ?? null, data.name ?? null, data.head_name ?? null, data.floor ?? null, data.capacity ?? 0]
   );
   return getDepartmentById(result.insertId);
 }
@@ -23,7 +23,7 @@ export async function updateDepartment(id, data) {
   await getDepartmentById(id);
   await query(
     'UPDATE departments SET dept_code=?, name=?, head_name=?, floor=?, capacity=? WHERE id=?',
-    [data.dept_code, data.name, data.head_name, data.floor, data.capacity, id]
+    [data.dept_code ?? null, data.name ?? null, data.head_name ?? null, data.floor ?? null, data.capacity ?? 0, id]
   );
   return getDepartmentById(id);
 }

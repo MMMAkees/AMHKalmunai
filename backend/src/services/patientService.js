@@ -35,7 +35,8 @@ export async function updatePatient(id, data) {
   await getPatientById(id);
   await query(
     `UPDATE patients SET name=?, nic=?, mobile=?, email=?, age=?, gender=?, address=?, blood_group=? WHERE id=?`,
-    [data.name, data.nic, data.mobile, data.email, data.age, data.gender, data.address, data.blood_group, id]
+    [data.name ?? null, data.nic ?? null, data.mobile ?? null, data.email ?? null,
+      data.age ?? null, data.gender ?? 'Male', data.address ?? null, data.blood_group ?? null, id]
   );
   return getPatientById(id);
 }

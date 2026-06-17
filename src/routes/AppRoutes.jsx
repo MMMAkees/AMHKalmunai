@@ -6,6 +6,7 @@ import { patientMenu, receptionMenu, doctorMenu, adminMenu } from './menuConfig'
 
 import HomePage from '../pages/public/HomePage';
 import LoginPage from '../pages/public/LoginPage';
+import StaffLoginPage from '../pages/public/StaffLoginPage';
 
 import PatientDashboard from '../pages/patient/PatientDashboard';
 import PatientAppointments from '../pages/patient/PatientAppointments';
@@ -41,6 +42,7 @@ export default function AppRoutes() {
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/staff/login" element={<StaffLoginPage />} />
 
       <Route path="/patient" element={
         <ProtectedRoute allowedRoles={['patient']}>

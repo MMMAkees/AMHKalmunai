@@ -38,7 +38,7 @@ export async function updateDoctor(id, data) {
   await getDoctorById(id);
   await query(
     'UPDATE doctors SET department_id=?, specialization=?, availability=?, experience=? WHERE id=?',
-    [data.department_id, data.specialization, data.availability, data.experience, id]
+    [data.department_id ?? null, data.specialization ?? null, data.availability ?? 'Available', data.experience ?? null, id]
   );
   return getDoctorById(id);
 }

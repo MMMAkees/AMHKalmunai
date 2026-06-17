@@ -27,9 +27,9 @@ export const DOCTOR_STATUS = {
 };
 
 export const CONSULTATION_STATUS = {
+  IN_CONSULTATION: 'In Consultation',
   COMPLETED: 'Completed',
-  FOLLOW_UP: 'Follow-Up Required',
-  REFERRED: 'Referred',
+  SKIPPED: 'Skipped',
 };
 
 export const ITEMS_PER_PAGE = 8;

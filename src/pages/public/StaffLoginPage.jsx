@@ -1,19 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaHospital, FaUser, FaEye, FaEyeSlash, FaCheckCircle, FaArrowLeft } from 'react-icons/fa';
+import { FaHospital, FaUserMd, FaUserShield, FaEye, FaEyeSlash, FaCheckCircle, FaArrowLeft } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { useAuth } from '../../context/AuthContext';
 import { demoCredentials } from '../../services/auth';
 import { roleDashboardPaths } from '../../routes/menuConfig';
 import loginHero from '../../assets/login_hero.png';
 
-export default function LoginPage() {
-  const [email, setEmail] = useState(demoCredentials.patient.email);
-  const [password, setPassword] = useState(demoCredentials.patient.password);
+const roles = [
+  { id: 'reception', label: 'Receptionist', icon: FaUserShield, color: 'border-purple-400 bg-purple-50 text-purple-700' },
+  { id: 'doctor', label: 'Doctor', icon: FaUserMd, color: 'border-green-400 bg-green-50 text-green-700' },
+  { id: 'admin', label: 'Admin', icon: FaUserShield, color: 'border-red-400 bg-red-50 text-red-700' },
+];
+
+export default function StaffLoginPage() {
+  const [role, setRole] = useState('reception');
+  const [email, setEmail] = useState(demoCredentials.reception.email);
+  const [password, setPassword] = useState(demoCredentials.reception.password);
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // Forgot Password / View states
   const [view, setView] = useState('login'); // 'login' | 'forgot' | 'reset-success'
   const [resetEmail, setResetEmail] = useState('');
@@ -26,12 +33,13 @@ export default function LoginPage() {
     const handleOAuthMessage = async (event) => {
       if (event.origin !== window.location.origin) return;
       if (event.data && event.data.source === 'google-mock-auth' && event.data.status === 'success') {
-        const { email } = event.data.user;
+        const { email, role: authRole } = event.data.user;
+        const targetRole = authRole || role;
         setLoading(true);
         setError('');
-        const result = await login(email, demoCredentials.patient.password, 'patient');
+        const result = await login(email, demoCredentials[targetRole].password, targetRole);
         if (result.success) {
-          navigate(roleDashboardPaths.patient);
+          navigate(roleDashboardPaths[targetRole]);
         } else {
           setError(result.error || 'Google Login failed');
         }
@@ -40,15 +48,22 @@ export default function LoginPage() {
     };
     window.addEventListener('message', handleOAuthMessage);
     return () => window.removeEventListener('message', handleOAuthMessage);
-  }, [login, navigate]);
+  }, [login, navigate, role]);
+
+  const handleRoleChange = (r) => {
+    setRole(r);
+    setEmail(demoCredentials[r]?.email || '');
+    setPassword(demoCredentials[r]?.password || '');
+    setError('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    const result = await login(email, password, 'patient');
+    const result = await login(email, password, role);
     if (result.success) {
-      navigate(roleDashboardPaths.patient);
+      navigate(roleDashboardPaths[role]);
     } else {
       setError(result.error || 'Login failed');
     }
@@ -61,7 +76,7 @@ export default function LoginPage() {
     const left = window.screen.width / 2 - width / 2;
     const top = window.screen.height / 2 - height / 2;
     window.open(
-      `/google-mock-auth.html?type=patient`,
+      `/google-mock-auth.html?type=staff`,
       'Google Sign In',
       `width=${width},height=${height},left=${left},top=${top},status=no,resizable=yes`
     );
@@ -97,22 +112,40 @@ export default function LoginPage() {
                 </div>
                 
                 <p className="text-sm font-bold text-primary-600 uppercase tracking-widest">
-                  PATIENT LOGIN
+                  STAFF PORTAL
                 </p>
                 <p className="mt-1 text-xs text-gray-500">
-                  Welcome back! Please enter your details.
+                  Smart Patient Flow & Queue Management
                 </p>
+              </div>
+
+              <div>
+                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Select Staff Role</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {roles.map((r) => (
+                    <button
+                      key={r.id}
+                      type="button"
+                      onClick={() => handleRoleChange(r.id)}
+                      className={`flex flex-col items-center justify-center gap-1.5 p-2 rounded-xl border-2 text-xs font-medium transition-all ${
+                        role === r.id ? r.color + ' border-current shadow-sm' : 'border-gray-200 text-gray-500 hover:border-gray-300'
+                      }`}
+                    >
+                      <r.icon className="text-sm" /> {r.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-3.5">
                 <div>
-                  <label className="block text-[11px] font-semibold text-gray-600 uppercase tracking-wider mb-1">Email Address</label>
+                  <label className="block text-[11px] font-semibold text-gray-600 uppercase tracking-wider mb-1">Staff Email</label>
                   <input 
                     type="email" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                     required
-                    placeholder="Enter your email"
+                    placeholder="Enter email address"
                     className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-gray-50/50" 
                   />
                 </div>
@@ -134,12 +167,8 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-medium">
-                  <label className="flex items-center gap-2 text-gray-600 cursor-pointer">
-                    <input type="checkbox" className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
-                    <span>Remember me</span>
-                  </label>
-                  <a href="#" onClick={(e) => { e.preventDefault(); setView('forgot'); }} className="text-primary-600 hover:text-primary-700">Forgot password</a>
+                <div className="flex items-center justify-end text-xs font-medium pt-1">
+                  <a href="#" onClick={(e) => { e.preventDefault(); setView('forgot'); }} className="text-primary-600 hover:text-primary-700">Forgot password?</a>
                 </div>
 
                 {error && <p className="text-red-600 text-xs bg-red-50 p-2 rounded-lg">{error}</p>}
@@ -187,19 +216,19 @@ export default function LoginPage() {
                   Forgot Password
                 </p>
                 <p className="mt-1 text-xs text-gray-500">
-                  Enter your email address to reset your password.
+                  Enter your email address to reset your staff account password.
                 </p>
               </div>
 
               <form onSubmit={handleForgotPasswordSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-[11px] font-semibold text-gray-600 uppercase tracking-wider mb-1">Email Address</label>
+                  <label className="block text-[11px] font-semibold text-gray-600 uppercase tracking-wider mb-1">Staff Email Address</label>
                   <input 
                     type="email" 
                     value={resetEmail} 
                     onChange={(e) => setResetEmail(e.target.value)} 
                     required
-                    placeholder="Enter registered email"
+                    placeholder="Enter registered staff email"
                     className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-gray-50/50" 
                   />
                 </div>
@@ -229,7 +258,7 @@ export default function LoginPage() {
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Email Sent!</h3>
                 <p className="mt-2 text-xs text-gray-500 px-4">
-                  We have sent a password reset link to <strong>{resetEmail}</strong>. Please check your inbox and spam folder.
+                  We have sent a password reset link to <strong>{resetEmail}</strong>. Please check your staff inbox.
                 </p>
               </div>
 

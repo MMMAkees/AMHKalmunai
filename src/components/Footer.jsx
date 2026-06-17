@@ -1,40 +1,59 @@
 import { Link } from 'react-router-dom';
-import { FaHospital, FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaTwitter, FaYoutube, FaLinkedin } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaTwitter, FaYoutube, FaLinkedin, FaArrowUp } from 'react-icons/fa';
 import { hospitalInfo, quickLinks } from '../data/hospital';
+import govtLogo from '../assets/govt_logo.png';
 
 export default function Footer() {
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
   return (
-    <footer id="contact" className="bg-primary-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer id="contact" className="relative bg-[#040810] border-t border-white/[0.04]">
+      {/* Gradient mesh */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-primary-900/20 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-1/4 w-[300px] h-[300px] bg-teal-900/10 rounded-full blur-[100px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Brand */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
-                <FaHospital className="text-teal-300 text-lg" />
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-11 h-11 rounded-xl overflow-hidden ring-1 ring-white/10 flex-shrink-0">
+                <img src={govtLogo} alt="Sri Lanka Government" className="w-full h-full object-cover" />
               </div>
               <div>
-                <h3 className="font-bold text-lg">{hospitalInfo.shortName}</h3>
-                <p className="text-sm text-blue-200">{hospitalInfo.name}</p>
+                <h3 className="font-extrabold text-white text-lg leading-tight">{hospitalInfo.shortName}</h3>
+                <p className="text-xs text-blue-300/50 font-medium">{hospitalInfo.name}</p>
               </div>
             </div>
-            <p className="text-blue-200 text-sm leading-relaxed">
-              Digitizing healthcare for a healthier Eastern Province.
+            <p className="text-blue-200/40 text-sm leading-relaxed mb-5">
+              Digitizing healthcare for a healthier Eastern Province. Smart solutions for modern patient care.
             </p>
-            <div className="flex gap-3 mt-4">
+            <div className="flex gap-2.5">
               {[FaFacebook, FaTwitter, FaYoutube, FaLinkedin].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-teal-500 transition-colors">
+                <a
+                  key={i}
+                  href="#"
+                  className="w-9 h-9 rounded-xl glass-dark flex items-center justify-center text-blue-200/50 hover:text-white hover:bg-primary-600/30 transition-all duration-300 hover:-translate-y-0.5"
+                >
                   <Icon className="text-sm" />
                 </a>
               ))}
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
-            <ul className="space-y-2">
+            <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-5">Quick Links</h4>
+            <ul className="space-y-2.5">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.path} className="text-blue-200 hover:text-white text-sm transition-colors">
+                  <Link
+                    to={link.path}
+                    className="text-blue-200/40 hover:text-primary-300 text-sm transition-colors duration-200 flex items-center gap-2 group"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-primary-600/50 group-hover:bg-primary-400 transition-colors" />
                     {link.label}
                   </Link>
                 </li>
@@ -42,39 +61,55 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
-            <h4 className="font-semibold text-lg mb-4">Contact Information</h4>
-            <ul className="space-y-3 text-sm text-blue-200">
+            <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-5">Contact</h4>
+            <ul className="space-y-3.5 text-sm text-blue-200/40">
               <li className="flex items-start gap-3">
-                <FaMapMarkerAlt className="text-teal-300 mt-0.5 shrink-0" />
-                {hospitalInfo.address}
+                <FaMapMarkerAlt className="text-primary-400/70 mt-0.5 shrink-0" />
+                <span>{hospitalInfo.address}</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaPhone className="text-teal-300 shrink-0" />
-                {hospitalInfo.phone}
+                <FaPhone className="text-primary-400/70 shrink-0" />
+                <span>{hospitalInfo.phone}</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaEnvelope className="text-teal-300 shrink-0" />
-                {hospitalInfo.email}
+                <FaEnvelope className="text-primary-400/70 shrink-0" />
+                <span>{hospitalInfo.email}</span>
               </li>
             </ul>
           </div>
 
+          {/* Emergency */}
           <div>
-            <h4 className="font-semibold text-lg mb-4">Emergency Contact</h4>
-            <div className="bg-red-600/20 border border-red-400/30 rounded-xl p-4">
-              <p className="text-red-200 text-sm mb-1">24/7 Emergency Hotline</p>
-              <p className="text-2xl font-bold text-white">{hospitalInfo.emergency}</p>
-              <p className="text-red-200 text-xs mt-2">For medical emergencies only</p>
+            <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-5">Emergency</h4>
+            <div className="glass-dark rounded-2xl p-5 border border-red-500/10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-20 h-20 bg-red-500/5 rounded-full blur-2xl" />
+              <p className="text-red-300/60 text-xs font-medium uppercase tracking-wider mb-1">24/7 Hotline</p>
+              <p className="text-2xl font-extrabold text-white tracking-tight">{hospitalInfo.emergency}</p>
+              <p className="text-red-300/40 text-[10px] mt-2 uppercase tracking-wider">Medical emergencies only</p>
+              <div className="mt-3 h-[2px] w-full bg-gradient-to-r from-red-500/30 via-red-400/50 to-transparent rounded-full" />
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-blue-300 text-sm">
+        {/* Bottom bar */}
+        <div className="border-t border-white/[0.04] mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-blue-300/30 text-xs">
             &copy; {new Date().getFullYear()} {hospitalInfo.name}. All rights reserved.
           </p>
-          <p className="text-blue-300 text-xs">AMH Smart Patient Flow & Queue Management System v1.0</p>
+          <div className="flex items-center gap-4">
+            <p className="text-blue-300/30 text-[10px] uppercase tracking-wider">
+              AMH Smart Patient Flow v1.0
+            </p>
+            <button
+              onClick={scrollToTop}
+              className="w-8 h-8 rounded-lg glass-dark flex items-center justify-center text-blue-200/40 hover:text-white hover:bg-primary-600/30 transition-all duration-300 hover:-translate-y-0.5"
+              aria-label="Scroll to top"
+            >
+              <FaArrowUp className="text-xs" />
+            </button>
+          </div>
         </div>
       </div>
     </footer>

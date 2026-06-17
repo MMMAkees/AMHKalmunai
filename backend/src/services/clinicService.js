@@ -18,7 +18,7 @@ export async function getSchedulesByDoctor(doctorId) {
 export async function createSchedule(data) {
   const result = await query(
     'INSERT INTO clinic_schedules (clinic_name, doctor_id, day_of_week, start_time, end_time) VALUES (?, ?, ?, ?, ?)',
-    [data.clinic_name, data.doctor_id, data.day_of_week, data.start_time, data.end_time]
+    [data.clinic_name ?? null, data.doctor_id ?? null, data.day_of_week ?? null, data.start_time ?? null, data.end_time ?? null]
   );
   const rows = await query('SELECT * FROM clinic_schedules WHERE id = ?', [result.insertId]);
   return rows[0];
@@ -27,7 +27,7 @@ export async function createSchedule(data) {
 export async function updateSchedule(id, data) {
   await query(
     'UPDATE clinic_schedules SET clinic_name=?, doctor_id=?, day_of_week=?, start_time=?, end_time=? WHERE id=?',
-    [data.clinic_name, data.doctor_id, data.day_of_week, data.start_time, data.end_time, id]
+    [data.clinic_name ?? null, data.doctor_id ?? null, data.day_of_week ?? null, data.start_time ?? null, data.end_time ?? null, id]
   );
   const rows = await query('SELECT * FROM clinic_schedules WHERE id = ?', [id]);
   if (!rows[0]) throw new AppError('Schedule not found', 404);

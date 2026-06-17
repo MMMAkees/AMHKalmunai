@@ -37,7 +37,7 @@ export async function updateUser(id, data) {
   await getUserById(id);
   await query(
     'UPDATE users SET name = ?, email = ?, role = ?, phone = ?, status = ? WHERE id = ?',
-    [data.name, data.email, data.role, data.phone, data.status || 'Active', id]
+    [data.name ?? null, data.email ?? null, data.role ?? 'patient', data.phone ?? null, data.status ?? 'Active', id]
   );
   return getUserById(id);
 }
