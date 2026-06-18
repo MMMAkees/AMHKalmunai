@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
-import { FaBars, FaTimes, FaCalendarCheck } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
+import { FaBars, FaTimes, FaCalendarCheck, FaSun, FaMoon, FaUserShield } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import govtLogo from '../assets/govt_logo.png';
+import { useTheme } from '../context/ThemeContext';
 
 /* Staggered animation style helper */
 const fadeIn = (delay) => ({
@@ -11,6 +12,8 @@ const fadeIn = (delay) => ({
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
+  const location = useLocation();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -69,12 +72,32 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3" style={fadeIn(400)}>
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-500 hover:text-primary-700 hover:bg-primary-50 transition-all duration-200"
+              aria-label="Toggle theme"
+              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {isDark ? <FaSun className="text-amber-400" size={15} /> : <FaMoon size={15} />}
+            </button>
+
+            {/* Staff Login */}
+            <Link
+              to="/staff-login"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-primary-700 rounded-xl border border-primary-200 hover:bg-primary-50 transition-all duration-200"
+            >
+              <FaUserShield className="text-xs" />
+              Staff
+            </Link>
+
+            {/* Patient Login */}
             <Link
               to="/login"
               className="mat-btn inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-primary-700 to-primary-600 mat-elevation-2 hover:mat-elevation-4 hover:-translate-y-0.5 transition-all duration-300"
             >
               <FaCalendarCheck className="text-xs" />
-              Login
+              Patient Login
             </Link>
           </div>
 
@@ -108,12 +131,26 @@ export default function Navbar() {
           ))}
           <div className="pt-2 border-t border-blue-50 space-y-2">
             <Link
+              to="/staff-login"
+              onClick={() => setOpen(false)}
+              className="block w-full text-center py-2.5 border border-primary-200 text-primary-700 rounded-xl font-semibold text-sm hover:bg-primary-50 transition-colors"
+            >
+              Staff Login
+            </Link>
+            <Link
               to="/login"
               onClick={() => setOpen(false)}
               className="block w-full text-center py-3 bg-gradient-to-r from-primary-700 to-primary-600 text-white rounded-xl font-semibold text-sm mat-elevation-2"
             >
-              Book Appointment
+              Patient Login
             </Link>
+            <button
+              onClick={() => { toggleTheme(); setOpen(false); }}
+              className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-medium text-gray-600 hover:text-primary-700 transition-colors"
+            >
+              {isDark ? <FaSun className="text-amber-400" /> : <FaMoon />}
+              {isDark ? 'Light Mode' : 'Dark Mode'}
+            </button>
           </div>
         </div>
       </div>

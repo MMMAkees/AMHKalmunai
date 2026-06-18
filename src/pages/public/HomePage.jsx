@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FaCalendarCheck, FaStream, FaHospital, FaUserMd, FaTicketAlt,
-  FaSms, FaQrcode, FaRoute, FaLanguage, FaArrowRight,
+  FaSms, FaQrcode, FaRoute, FaLanguage, FaArrowRight, FaChevronDown,
   FaAmbulance, FaStethoscope, FaProcedures, FaBaby,
   FaBone, FaBrain, FaFemale, FaTooth, FaXRay, FaTint, FaFlask, FaPills,
   FaHeartbeat, FaShieldAlt, FaClock, FaCheckCircle,
@@ -413,6 +413,12 @@ export default function HomePage() {
               <HeroIllustration />
             </div>
           </div>
+        </div>
+
+        {/* Scroll down hint */}
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce pointer-events-none">
+          <span className="text-[10px] uppercase tracking-widest text-primary-400/60 font-semibold">Scroll</span>
+          <FaChevronDown className="text-primary-400/50 text-sm" />
         </div>
 
         {/* Wave */}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaHospital, FaUser, FaEye, FaEyeSlash, FaCheckCircle, FaArrowLeft } from 'react-icons/fa';
+import { FaHospital, FaUser, FaEye, FaEyeSlash, FaCheckCircle, FaArrowLeft, FaBolt, FaLanguage } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { useAuth } from '../../context/AuthContext';
 import { demoCredentials } from '../../services/auth';
@@ -224,6 +224,21 @@ export default function LoginPage() {
                     ← Back to Home
                   </Link>
                 </p>
+
+                {/* Demo Credentials */}
+                <div className="mt-2 rounded-xl bg-white/[0.04] border border-white/10 p-3">
+                  <p className="text-[10px] font-semibold text-blue-300/50 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <FaBolt className="text-amber-400" /> Demo Credentials
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => { setEmail(demoCredentials.patient.email); setPassword(demoCredentials.patient.password); }}
+                    className="w-full text-left px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-200 group"
+                  >
+                    <p className="text-xs font-semibold text-white/80 group-hover:text-white transition-colors">Patient Demo</p>
+                    <p className="text-[10px] text-blue-200/40 font-mono mt-0.5">{demoCredentials.patient.email}</p>
+                  </button>
+                </div>
               </div>
             )}
 
@@ -341,6 +356,15 @@ export default function LoginPage() {
                   <div>
                     <p className="text-white text-xs font-semibold">AMH Digital Platform</p>
                     <p className="text-blue-200/40 text-[10px]">Ashraff Memorial Hospital, Kalmunai</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-sm flex-shrink-0">
+                    <FaLanguage />
+                  </div>
+                  <div>
+                    <p className="text-white text-xs font-semibold">Multilingual Support</p>
+                    <p className="text-blue-200/40 text-[10px]">English · Tamil · Sinhala</p>
                   </div>
                 </div>
               </div>

@@ -119,7 +119,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-4">
             <p className={`text-[10px] uppercase tracking-wider ${isDark ? 'text-blue-300/30' : 'text-gray-400'}`}>
-              AMH Smart Patient Flow v1.0
+              AMH Smart Patient Flow v1.1
             </p>
             <button
               onClick={scrollToTop}
