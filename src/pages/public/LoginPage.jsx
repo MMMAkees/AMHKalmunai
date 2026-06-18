@@ -13,7 +13,7 @@ export default function LoginPage() {
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // Forgot Password / View states
   const [view, setView] = useState('login'); // 'login' | 'forgot' | 'reset-success'
   const [resetEmail, setResetEmail] = useState('');
@@ -77,181 +77,274 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen md:h-screen md:overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-primary-800 via-primary-900 to-teal-950 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
-      
-      {/* Centered Rounded Card */}
-      <div className="relative w-full max-w-4xl bg-white rounded-[2rem] shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 animate-slide-up">
-        {/* Left Column: Login Form / Forgot Password Form */}
-        <div className="p-6 sm:p-10 flex flex-col justify-center">
-          {view === 'login' && (
-            <div className="space-y-5">
-              <div className="text-center flex flex-col items-center">
-                <div className="flex items-center justify-center gap-2.5 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600">
-                    <FaHospital className="text-base" />
-                  </div>
-                  <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-                    AMH Kalmunai
-                  </h1>
-                </div>
-                
-                <p className="text-sm font-bold text-primary-600 uppercase tracking-widest">
-                  PATIENT LOGIN
-                </p>
-                <p className="mt-1 text-xs text-gray-500">
-                  Welcome back! Please enter your details.
-                </p>
-              </div>
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-[#050a18]">
+      {/* Background gradient meshes */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-primary-700/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-teal-600/15 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-900/10 rounded-full blur-[150px]" />
+      </div>
 
-              <form onSubmit={handleSubmit} className="space-y-3.5">
-                <div>
-                  <label className="block text-[11px] font-semibold text-gray-600 uppercase tracking-wider mb-1">Email Address</label>
-                  <input 
-                    type="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required
-                    placeholder="Enter your email"
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-gray-50/50" 
-                  />
+      {/* Grid overlay */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:60px_60px]" />
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 18 }, (_, i) => (
+          <div
+            key={i}
+            className="particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${2 + Math.random() * 3}px`,
+              height: `${2 + Math.random() * 3}px`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${6 + Math.random() * 8}s`,
+              opacity: 0.1 + Math.random() * 0.25,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Main Card */}
+      <div className="relative w-full max-w-4xl animate-slide-up z-10">
+        <div className="glass-dark rounded-[2rem] shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-white/10">
+
+          {/* Left Column: Form */}
+          <div className="p-8 sm:p-10 flex flex-col justify-center">
+
+            {/* ── LOGIN VIEW ── */}
+            {view === 'login' && (
+              <div className="space-y-5">
+                {/* Header */}
+                <div className="text-center flex flex-col items-center">
+                  <div className="flex items-center justify-center gap-2.5 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary-500/20 border border-primary-400/30 flex items-center justify-center text-primary-400">
+                      <FaHospital className="text-lg" />
+                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                      AMH Kalmunai
+                    </h1>
+                  </div>
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-400/10 border border-teal-400/20 text-teal-300 text-xs font-semibold uppercase tracking-widest">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+                    Patient Login
+                  </span>
+                  <p className="mt-2 text-xs text-blue-200/50">
+                    Welcome back! Please enter your details.
+                  </p>
                 </div>
-                
-                <div>
-                  <label className="block text-[11px] font-semibold text-gray-600 uppercase tracking-wider mb-1">Password</label>
-                  <div className="relative">
-                    <input 
-                      type={showPass ? 'text' : 'password'} 
-                      value={password} 
-                      onChange={(e) => setPassword(e.target.value)} 
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-blue-300/70 uppercase tracking-wider mb-1.5">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
-                      placeholder="**********"
-                      className="w-full px-4 py-2 pr-10 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-gray-50/50" 
+                      placeholder="Enter your email"
+                      className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-blue-300/30 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-400/50 transition-all"
                     />
-                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                      {showPass ? <FaEyeSlash /> : <FaEye />}
-                    </button>
                   </div>
-                </div>
 
-                <div className="flex items-center justify-between text-xs font-medium">
-                  <label className="flex items-center gap-2 text-gray-600 cursor-pointer">
-                    <input type="checkbox" className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
-                    <span>Remember me</span>
-                  </label>
-                  <a href="#" onClick={(e) => { e.preventDefault(); setView('forgot'); }} className="text-primary-600 hover:text-primary-700">Forgot password</a>
-                </div>
-
-                {error && <p className="text-red-600 text-xs bg-red-50 p-2 rounded-lg">{error}</p>}
-
-                <button type="submit" disabled={loading}
-                  className="w-full py-2.5 mt-1 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 shadow-md transition-all active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none text-sm">
-                  {loading ? 'Signing in...' : 'Sign In'}
-                </button>
-
-                <div className="relative flex py-0.5 items-center">
-                  <div className="flex-grow border-t border-gray-150"></div>
-                  <span className="flex-shrink mx-3 text-gray-400 text-[9px] uppercase tracking-wider">or</span>
-                  <div className="flex-grow border-t border-gray-150"></div>
-                </div>
-
-                <button 
-                  type="button" 
-                  onClick={handleGoogleLogin}
-                  className="w-full flex items-center justify-center gap-2 py-2 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 shadow-sm transition-all active:scale-[0.98]"
-                >
-                  <FcGoogle className="text-lg" />
-                  Sign in with Google
-                </button>
-              </form>
-
-              <p className="text-center text-xs text-gray-500 pt-1">
-                <Link to="/" className="text-primary-600 font-semibold hover:underline">Back to Home</Link>
-              </p>
-            </div>
-          )}
-
-          {view === 'forgot' && (
-            <div className="space-y-5">
-              <div className="text-center flex flex-col items-center">
-                <div className="flex items-center justify-center gap-2.5 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600">
-                    <FaHospital className="text-base" />
+                  <div>
+                    <label className="block text-[11px] font-semibold text-blue-300/70 uppercase tracking-wider mb-1.5">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showPass ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        placeholder="••••••••••"
+                        className="w-full px-4 py-2.5 pr-10 rounded-xl text-sm text-white placeholder-blue-300/30 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-400/50 transition-all"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPass(!showPass)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-300/40 hover:text-blue-200 transition-colors"
+                      >
+                        {showPass ? <FaEyeSlash /> : <FaEye />}
+                      </button>
+                    </div>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-                    AMH Kalmunai
-                  </h1>
-                </div>
-                
-                <p className="text-sm font-bold text-primary-600 uppercase tracking-widest">
-                  Forgot Password
-                </p>
-                <p className="mt-1 text-xs text-gray-500">
-                  Enter your email address to reset your password.
+
+                  <div className="flex items-center justify-between text-xs font-medium">
+                    <label className="flex items-center gap-2 text-blue-200/50 cursor-pointer hover:text-blue-200/70 transition-colors">
+                      <input type="checkbox" className="rounded border-white/20 bg-white/5 text-primary-500 focus:ring-primary-500/30" />
+                      <span>Remember me</span>
+                    </label>
+                    <a
+                      href="#"
+                      onClick={(e) => { e.preventDefault(); setView('forgot'); }}
+                      className="text-primary-400 hover:text-primary-300 transition-colors"
+                    >
+                      Forgot password?
+                    </a>
+                  </div>
+
+                  {error && (
+                    <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
+                      {error}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="group relative w-full py-3 mt-1 bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold rounded-xl shadow-lg shadow-primary-600/25 hover:shadow-primary-500/40 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none text-sm overflow-hidden"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-primary-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="relative z-10">{loading ? 'Signing in...' : 'Sign In'}</span>
+                  </button>
+
+                  <div className="relative flex py-0.5 items-center">
+                    <div className="flex-grow border-t border-white/10" />
+                    <span className="flex-shrink mx-3 text-blue-300/30 text-[9px] uppercase tracking-wider">or</span>
+                    <div className="flex-grow border-t border-white/10" />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleGoogleLogin}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-blue-100 bg-white/5 border border-white/10 hover:bg-white/10 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98]"
+                  >
+                    <FcGoogle className="text-lg" />
+                    Sign in with Google
+                  </button>
+                </form>
+
+                <p className="text-center text-xs text-blue-200/40 pt-1">
+                  <Link to="/" className="text-primary-400 font-semibold hover:text-primary-300 transition-colors hover:underline">
+                    ← Back to Home
+                  </Link>
                 </p>
               </div>
+            )}
 
-              <form onSubmit={handleForgotPasswordSubmit} className="space-y-4">
+            {/* ── FORGOT PASSWORD VIEW ── */}
+            {view === 'forgot' && (
+              <div className="space-y-5">
+                <div className="text-center flex flex-col items-center">
+                  <div className="flex items-center justify-center gap-2.5 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary-500/20 border border-primary-400/30 flex items-center justify-center text-primary-400">
+                      <FaHospital className="text-lg" />
+                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                      AMH Kalmunai
+                    </h1>
+                  </div>
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-400/10 border border-yellow-400/20 text-yellow-300 text-xs font-semibold uppercase tracking-widest">
+                    Forgot Password
+                  </span>
+                  <p className="mt-2 text-xs text-blue-200/50">
+                    Enter your email address to reset your password.
+                  </p>
+                </div>
+
+                <form onSubmit={handleForgotPasswordSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-blue-300/70 uppercase tracking-wider mb-1.5">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      required
+                      placeholder="Enter registered email"
+                      className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-blue-300/30 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-400/50 transition-all"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={resetLoading}
+                    className="group relative w-full py-3 mt-2 bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold rounded-xl shadow-lg shadow-primary-600/25 hover:shadow-primary-500/40 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] disabled:opacity-60 text-sm overflow-hidden"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-primary-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="relative z-10">{resetLoading ? 'Sending Link...' : 'Send Reset Link'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setView('login')}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold text-blue-200/60 bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300"
+                  >
+                    <FaArrowLeft className="text-[10px]" /> Back to Login
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* ── RESET SUCCESS VIEW ── */}
+            {view === 'reset-success' && (
+              <div className="space-y-5 text-center flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center">
+                  <FaCheckCircle className="text-4xl text-emerald-400 animate-bounce" />
+                </div>
                 <div>
-                  <label className="block text-[11px] font-semibold text-gray-600 uppercase tracking-wider mb-1">Email Address</label>
-                  <input 
-                    type="email" 
-                    value={resetEmail} 
-                    onChange={(e) => setResetEmail(e.target.value)} 
-                    required
-                    placeholder="Enter registered email"
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-gray-50/50" 
-                  />
+                  <h3 className="text-xl font-bold text-white">Email Sent!</h3>
+                  <p className="mt-2 text-xs text-blue-200/50 px-4">
+                    We have sent a password reset link to{' '}
+                    <strong className="text-blue-200/80">{resetEmail}</strong>.
+                    Please check your inbox and spam folder.
+                  </p>
                 </div>
 
-                <button 
-                  type="submit" 
-                  disabled={resetLoading}
-                  className="w-full py-2.5 mt-2 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 shadow-md transition-all active:scale-[0.98] disabled:opacity-60 text-sm"
-                >
-                  {resetLoading ? 'Sending Link...' : 'Send Reset Link'}
-                </button>
-
-                <button 
+                <button
                   type="button"
-                  onClick={() => setView('login')}
-                  className="w-full flex items-center justify-center gap-2 py-2 border border-gray-150 rounded-xl text-xs font-semibold text-gray-500 bg-white hover:bg-gray-50 shadow-sm transition-all"
+                  onClick={() => { setView('login'); setResetEmail(''); }}
+                  className="group relative w-full py-3 mt-2 bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold rounded-xl shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] text-sm overflow-hidden"
                 >
-                  <FaArrowLeft className="text-[10px]" /> Back to Login
+                  <span className="absolute inset-0 bg-gradient-to-r from-primary-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative z-10">Back to Login</span>
                 </button>
-              </form>
-            </div>
-          )}
-
-          {view === 'reset-success' && (
-            <div className="space-y-5 text-center flex flex-col items-center">
-              <FaCheckCircle className="text-5xl text-emerald-500 animate-bounce" />
-              <div>
-                <h3 className="text-xl font-bold text-gray-900">Email Sent!</h3>
-                <p className="mt-2 text-xs text-gray-500 px-4">
-                  We have sent a password reset link to <strong>{resetEmail}</strong>. Please check your inbox and spam folder.
-                </p>
               </div>
+            )}
+          </div>
 
-              <button 
-                type="button"
-                onClick={() => { setView('login'); setResetEmail(''); }}
-                className="w-full py-2.5 mt-2 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 shadow-md transition-all active:scale-[0.98] text-sm"
-              >
-                Back to Login
-              </button>
+          {/* Right Column: Dark Illustration Panel */}
+          <div className="hidden md:flex flex-col items-center justify-center p-10 relative overflow-hidden border-l border-white/5 bg-gradient-to-br from-primary-900/40 via-transparent to-teal-900/20">
+            {/* Glow blobs */}
+            <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-primary-500/10 rounded-full blur-[80px]" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-64 h-64 bg-teal-500/10 rounded-full blur-[80px]" />
+
+            <div className="relative z-10 w-full max-w-xs flex flex-col items-center gap-6">
+              <img
+                src={loginHero}
+                alt="Hospital Flow Illustration"
+                className="w-full h-auto max-h-[38vh] object-contain drop-shadow-2xl"
+                style={{ filter: 'brightness(0.9) saturate(0.8) hue-rotate(10deg)' }}
+              />
+
+              {/* Dark info cards */}
+              <div className="w-full space-y-3">
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <div className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center text-primary-400 text-sm flex-shrink-0">
+                    <FaUser />
+                  </div>
+                  <div>
+                    <p className="text-white text-xs font-semibold">Smart Queue System</p>
+                    <p className="text-blue-200/40 text-[10px]">Real-time patient flow management</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <div className="w-8 h-8 rounded-lg bg-teal-500/20 flex items-center justify-center text-teal-400 text-sm flex-shrink-0">
+                    <FaHospital />
+                  </div>
+                  <div>
+                    <p className="text-white text-xs font-semibold">AMH Digital Platform</p>
+                    <p className="text-blue-200/40 text-[10px]">Ashraff Memorial Hospital, Kalmunai</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-
-        {/* Right Column: Hero Image Illustration */}
-        <div className="hidden md:flex bg-gradient-to-br from-primary-50/50 via-white to-teal-50/50 items-center justify-center p-8 relative overflow-hidden border-l border-gray-100">
-          <div className="relative max-w-sm w-full z-10 flex items-center justify-center">
-            <img 
-              src={loginHero} 
-              alt="Hospital Flow Illustration" 
-              className="w-full h-auto max-h-[45vh] object-contain mix-blend-multiply" 
-            />
           </div>
         </div>
       </div>
